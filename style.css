@@ -1,0 +1,83 @@
+/* Using Inter font as per instructions */
+:root {
+    --cell-size: 30px; /* This will be set dynamically by JS */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f4f8; /* Light gray background */
+    padding: 20px;
+}
+.grid-container {
+    display: grid;
+    gap: 0; /* Explicitly remove gap between grid items to fix white lines between rows */
+    border: 3px solid #6366f1; /* More prominent outer border */
+    border-radius: 8px; /* Rounded corners for the grid container */
+    overflow: auto; /* Enable scrolling if content overflows */
+    background-color: #ffffff; /* Default background, will be overridden by JS */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    /* Width and Height will now be directly set by JavaScript to match control panel and aspect ratio */
+}
+.grid-cell {
+    width: var(--cell-size); /* Use CSS variable for dynamic sizing */
+    height: var(--cell-size); /* Use CSS variable for dynamic sizing */
+    background-color: #e2e8f0; /* Default cell background */
+    border: 1px solid #cbd5e1; /* Subtle border for cells */
+    cursor: pointer; /* Indicate interactivity */
+    transition: background-color 0.1s ease-in-out; /* Smooth color transition */
+}
+/* Hover effect for cells */
+.grid-cell:hover {
+    opacity: 0.8;
+}
+
+/* Style for individual color swatches */
+.color-swatch {
+    border: 2px solid transparent; /* Default transparent border */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow */
+    transition: all 0.2s ease-in-out; /* Smooth transitions */
+}
+
+/* Enhanced: Style for active color swatch */
+.color-swatch.active {
+    border-color: #3B82F6; /* Stronger blue border for active */
+    border-width: 3px; /* Made border thicker for better visibility */
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 8px rgba(59, 130, 246, 0.7); /* More pronounced blue glow */
+    transform: scale(1.1); /* Slightly enlarge the active swatch */
+}
+
+/* Style for active tool (like the Eraser button) */
+.active-tool {
+    background-color: #6366f1 !important; /* A distinct background color when active */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5), 0 0 8px rgba(99, 102, 241, 0.7); /* Matching glow */
+    transform: scale(1.05); /* Slightly enlarge active tool button */
+}
+
+/* Specific style for active Eraser button (red border) */
+#eraserBtn.active-tool {
+    border: 3px solid #EF4444; /* Red border */
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.5), 0 0 8px rgba(239, 68, 68, 0.7); /* Red glow */
+}
+
+
+/* Responsive Breakpoints using Tailwind's default values */
+/* Mobile (up to 640px) - handled by default flex-col and w-full */
+/* Tablet (md: 768px and up) */
+@media (min-width: 768px) {
+    .md\:flex-row {
+        flex-direction: row;
+    }
+    .md\:space-x-6 > :not([hidden]) ~ :not([hidden]) {
+        margin-right: 1.5rem; /* 24px */
+        margin-left: 0;
+    }
+    .md\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 0;
+    }
+}
+/* Desktop (lg: 1024px and up) - implicitly handled by md styles and max-w-4xl */
