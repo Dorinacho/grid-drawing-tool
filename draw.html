@@ -1,103 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title data-key="appTitle">Color Grid App</title>
     <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Link to your external CSS file -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/draw.css" />
     <!-- jsPDF CDN for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
-
+  </head>
+  <body
+    class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4"
+  >
+    <button
+      id="backToHomeBtn"
+      data-key="backToHomeBtn"
+      class="fixed top-4 left-4 px-6 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105 z-50"
+    >
+      Back to Home
+    </button>
     <!-- Control panel with responsive classes: now includes md:flex-wrap and justify-center -->
-    <div id="controlPanel" class="mb-8 p-6 bg-white rounded-xl shadow-lg flex flex-col md:flex-row md:flex-wrap items-center justify-center space-y-4 md:space-y-0 md:space-x-6 w-full max-w-4xl">
-        <div class="flex flex-col items-center space-y-2">
-            <label data-key="currentColorLabel" class="text-lg font-semibold text-gray-700">Current Color:</label>
-            <!-- Single color input element -->
-            <input type="color" id="colorPickerInput" value="#4F46E5" class="w-24 h-10 border-2 border-indigo-500 rounded-md cursor-pointer appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-
-            <label data-key="colorPalettesLabel" class="text-lg font-semibold text-gray-700 mt-4">Color Palettes:</label>
-            <!-- Four color swatch boxes -->
-            <div id="colorSwatchesContainer" class="flex space-x-2">
-                <div class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200" style="background-color: #4F46E5;" data-color="#4F46E5"></div>
-                <div class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200" style="background-color: #EF4444;" data-color="#EF4444"></div>
-                <div class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200" style="background-color: #10B981;" data-color="#10B981"></div>
-                <div class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200" style="background-color: #F59E0B;" data-color="#F59E0B"></div>
-            </div>
+    <div
+      id="controlPanel"
+      class="mb-8 p-6 bg-white rounded-xl shadow-lg flex flex-col md:flex-row md:flex-wrap items-center justify-center space-y-4 md:space-y-0 md:space-x-6 w-full max-w-4xl"
+    >
+      <div class="flex flex-col items-center space-y-2 control-item-group">
+        <label
+          data-key="adjustSelectedColorLabel"
+          class="text-lg font-semibold text-gray-700"
+          >Adjust Selected Color:</label
+        >
+        <div id="colorSwatchesContainer" class="flex space-x-2">
+          <input
+            type="color"
+            id="colorSwatchPicker1"
+            value="#4F46E5"
+            class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200 appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-color="#4F46E5"
+          />
+          <input
+            type="color"
+            id="colorSwatchPicker2"
+            value="#EF4444"
+            class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200 appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-color="#EF4444"
+          />
+          <input
+            type="color"
+            id="colorSwatchPicker3"
+            value="#10B981"
+            class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200 appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-color="#10B981"
+          />
+          <input
+            type="color"
+            id="colorSwatchPicker4"
+            value="#F59E0B"
+            class="color-swatch w-10 h-10 rounded-md cursor-pointer border-2 border-transparent transition-all duration-200 appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-color="#F59E0B"
+          />
         </div>
+      </div>
 
-        <!-- Grid Background Color Picker -->
-        <div class="flex flex-col items-center space-y-2">
-            <label for="gridBgColorPicker" data-key="gridBgLabel" class="text-lg font-semibold text-gray-700">Grid Background:</label>
-            <input type="color" id="gridBgColorPicker" value="#FFFFFF"
-                   class="w-24 h-10 border-2 border-gray-400 rounded-md cursor-pointer appearance-none p-1 focus:outline-none focus:ring-2 focus:ring-gray-600">
-        </div>
-
-        <div class="flex flex-col items-center space-y-2">
-            <div class="flex items-center space-x-4">
-                <label for="numSquaresInRow" data-key="squaresInRowLabel" class="text-lg font-semibold text-gray-700">Squares in Row:</label>
-                <input type="number" id="numSquaresInRow" value="20" min="1" max="100"
-                    class="w-20 p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center">
-            </div>
-            <!-- NEW: Warning message for grid erase -->
-            <div data-key="squaresInRowWarning" class="text-red-600 font-bold text-sm mt-1 text-center">
-                Changing this value will erase the grid!
-            </div>
-            <!-- END NEW -->
-        </div>
-
+      <div class="flex flex-col items-center space-y-2 control-item-group">
         <div class="flex items-center space-x-4">
-            <label for="pageDimension" data-key="pageSizeLabel" class="text-lg font-semibold text-gray-700">Page Size:</label>
-            <select id="pageDimension"
-                    class="p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="A5">A5</option>
-                <option value="A4" selected>A4</option>
-                <option value="A3">A3</option>
-            </select>
+          <label
+            for="numSquaresInRow"
+            data-key="squaresInRowLabel"
+            class="text-lg font-semibold text-gray-700"
+            >Squares in Row:</label
+          >
+          <input
+            type="number"
+            id="numSquaresInRow"
+            value="20"
+            min="1"
+            max="100"
+            class="w-20 p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center"
+          />
         </div>
+      </div>
 
-        <!-- Language Selector -->
-        <div class="flex items-center space-x-4">
-            <label for="languageSelect" data-key="languageLabel" class="text-lg font-semibold text-gray-700">Language:</label>
-            <select id="languageSelect"
-                    class="p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="en" selected>English</option>
-                <option value="ro">Română</option>
-            </select>
-        </div>
+      <div class="flex items-center space-x-4 control-item-group">
+        <label
+          for="pageDimension"
+          data-key="pageSizeLabel"
+          class="text-lg font-semibold text-gray-700"
+          >Page Size:</label
+        >
+        <select
+          id="pageDimension"
+          class="p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="A5">A5</option>
+          <option value="A4" selected>A4</option>
+          <option value="A3">A3</option>
+        </select>
+      </div>
 
-        <!-- Eraser Button -->
-        <button id="eraserBtn" data-key="eraserBtn"
-                class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105 mr-2">
-            Eraser
-        </button>
+      <div class="flex items-center space-x-4 control-item-group">
+        <label
+          for="languageSelect"
+          data-key="languageLabel"
+          class="text-lg font-semibold text-gray-700"
+          >Language:</label
+        >
+        <select
+          id="languageSelect"
+          class="p-2 border-2 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="en">English</option>
+          <option value="ro" selected>Română</option>
+        </select>
+      </div>
 
-        <!-- Export to PDF Button -->
-        <button id="exportPdfBtn" data-key="exportPdfBtn"
-                class="px-6 py-3 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105 mr-2">
-            Export to PDF
-        </button>
+      <!-- Eraser Button -->
+      <button
+        id="eraserBtn"
+        data-key="eraserBtn"
+        class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105 mr-2"
+      >
+        Eraser
+      </button>
 
-        <button id="createGridBtn" data-key="createGridBtn"
-                class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105">
-            Create Grid
-        </button>
+      <!-- Export to PDF Button -->
+      <button
+        id="exportPdfBtn"
+        data-key="exportPdfBtn"
+        class="px-6 py-3 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105 mr-2"
+      >
+        Export to PDF
+      </button>
+
+      <button
+        id="createGridBtn"
+        data-key="createGridBtn"
+        class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:scale-105"
+      >
+        Create Grid
+      </button>
     </div>
 
     <!-- Display for square size in millimeters -->
-    <div id="squareSizeMMDisplay" class="mt-4 text-lg font-medium text-gray-700">
-        <!-- Square size in millimeters will be displayed here -->
+    <div
+      id="squareSizeMMDisplay"
+      class="mt-4 text-lg font-medium text-gray-700"
+    >
+      <!-- Square size in millimeters will be displayed here -->
     </div>
 
     <div id="gridContainer" class="grid-container">
-        <!-- The grid squares will be inserted here by JavaScript -->
+      <!-- The grid squares will be inserted here by JavaScript -->
     </div>
 
     <!-- Link to your external JavaScript file -->
-    <script src="script.js"></script>
-</body>
+    <script src="./script/draw.js"></script>
+  </body>
 </html>
