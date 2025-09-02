@@ -1,5 +1,7 @@
 import ro from "../translations/ro.js";
 import en from "../translations/en.js";
+import "./grid.js"
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const colorSwatches = document.querySelectorAll(".color-swatch");
@@ -9,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const eraserBtn = document.getElementById("eraserBtn");
   const languageSelect = document.getElementById("languageSelect");
   const pageSizeSelect = document.getElementById("pageSizeSelect");
+
 
   const gridContainer = document.getElementById("gridContainer");
   const gridContainerWidth = gridContainer.offsetWidth;
@@ -196,23 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gridContainer.style.gridTemplateColumns = `repeat(${numSquaresInRow}, ${squareSizePx}px)`;
     gridContainer.style.gridTemplateRows = `repeat(${numRows}, ${squareSizePx}px)`;
 
-    // // Create grid cells
-    // for (let i = 0; i < numSquaresInRow * numRows; i++) {
-    //   const cell = document.createElement("div");
-    //   cell.classList.add("grid-cell");
-    //   cell.style.backgroundColor = defaultCellColor;
-    //   gridContainer.appendChild(cell);
-    // }
-
-    // --- ADAPTED LOGIC STARTS HERE ---
-    // 1. Generate the data model (array of objects)
-    
-    // console.log(gridData);
-
-    // 2. Iterate through the data and render the visual elements
-    console.log("___________");
-    console.log(gridData);
-    
     
     gridData.forEach((cell, index) => {
       const cellElement = document.createElement("div");
