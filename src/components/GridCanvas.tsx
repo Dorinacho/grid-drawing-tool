@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import type { GridCanvasProps } from '../types/index.ts';
-import { colors, calculateCanvasDimensions } from '../utils/grid.ts';
+import { calculateCanvasDimensions } from '../utils/grid.ts';
 
 const GridCanvas: React.FC<GridCanvasProps> = ({
   matrix,
@@ -8,7 +8,8 @@ const GridCanvas: React.FC<GridCanvasProps> = ({
   cols,
   isHorizontal,
   selectedColor,
-  onCellClick
+  onCellClick,
+  colors
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -34,9 +35,9 @@ const GridCanvas: React.FC<GridCanvasProps> = ({
         const y = i * cellSize;
 
         // Draw cell background
-        const cellValue = matrix[i]?.[j] || 0;
-        if (cellValue !== 0) {
-          ctx.fillStyle = colors[cellValue];
+        const cellValue = matrix[i]?.[j];
+        if (cellValue && cellValue !== null) {
+          ctx.fillStyle = cellValue; // Use the hex color directly
           ctx.fillRect(x, y, cellSize, cellSize);
         }
 

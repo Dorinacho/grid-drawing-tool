@@ -47,3 +47,6 @@ __snapshots__/
 
 # Astro-specific
 src/content/config.ts
+
+# Local Netlify folder
+.netlify

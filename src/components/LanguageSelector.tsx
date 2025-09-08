@@ -16,14 +16,13 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <button
           key={code}
           onClick={() => onLanguageChange(code)}
-          className={`
-            px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 min-w-[50px]
-            border-2 border-indigo-500 
-            ${currentLanguage === code 
-              ? 'bg-indigo-500 text-white shadow-md hover:bg-indigo-600 hover:shadow-lg' 
-              : 'bg-transparent text-indigo-600 hover:bg-indigo-50 hover:-translate-y-0.5'
-            }
-          `}
+          className={[
+            "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 min-w-[50px]",
+            "border-2 border-indigo-500",
+            currentLanguage === code
+              ? "bg-indigo-500 text-white shadow-md hover:bg-indigo-600 hover:shadow-lg"
+              : "bg-transparent text-indigo-600 hover:bg-indigo-50 hover:-translate-y-0.5"
+          ].join(" ")}
         >
           {label}
         </button>

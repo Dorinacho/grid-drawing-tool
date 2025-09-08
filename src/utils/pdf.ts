@@ -1,4 +1,4 @@
-import type { GridMatrix, PaperSize, Language, ColorIndex } from '@/types/index.ts';
+import type { GridMatrix, PaperSize, Language } from '@/types/index.ts';
 import { paperSizes } from './grid.ts';
 import { getText } from './language.ts';
 
@@ -9,6 +9,16 @@ declare global {
     };
   }
 }
+
+// Helper function to convert hex color to RGB
+const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+};
 
 export const exportGridToPDF = (
   matrix: GridMatrix,
@@ -66,24 +76,19 @@ export const exportGridToPDF = (
         pdf.setDrawColor(200, 200, 200);
         pdf.rect(x, y, cellSize, cellSize);
         
-        // Fill painted cells with appropriate colors
-        const cellValue: ColorIndex = matrix[i][j];
-        if (cellValue !== 0) {
-          switch(cellValue) {
-            case 1:
-              pdf.setFillColor(102, 126, 234); // Blue
-              break;
-            case 2:
-              pdf.setFillColor(240, 147, 251); // Pink
-              break;
-            case 3:
-              pdf.setFillColor(78, 205, 196); // Teal
-              break;
-            case 4:
-              pdf.setFillColor(252, 227, 138); // Yellow
-              break;
+        // Fill painted cells with their actual hex colors
+        const cellValue = matrix[i]?.[j];
+        if (cellValue && cellValue !== null) {
+          // Convert hex color to RGB for jsPDF
+          const rgb = hexToRgb(cellValue);
+          if (rgb) {
+            pdf.setFillColor(rgb.r, rgb.g, rgb.b);
+            pdf.rect(x, y, cellSize, cellSize, 'F');
+            
+            // Redraw border on top of filled cell
+            pdf.setDrawColor(200, 200, 200);
+            pdf.rect(x, y, cellSize, cellSize);
           }
-          pdf.rect(x, y, cellSize, cellSize, 'F');
         }
       }
     }
@@ -91,11 +96,18 @@ export const exportGridToPDF = (
     // Add title
     pdf.setFontSize(16);
     pdf.setTextColor(0, 0, 0);
-    const title = getText('title', language) + ' ' + getText('exportToPDF', language);
+    const title = getText('title', language) + ' - ' + getText('exportToPDF', language);
     pdf.text(title, pdfWidth / 2, 15, { align: 'center' });
     
-    // Save PDF
-    const filename = `grid_${paperSize}_${isHorizontal ? 'landscape' : 'portrait'}.pdf`;
+    // Add grid info
+    pdf.setFontSize(10);
+    pdf.setTextColor(100, 100, 100);
+    const gridInfo = `${rows} × ${cols} (${getText(isHorizontal ? 'horizontal' : 'vertical', language)})`;
+    pdf.text(gridInfo, pdfWidth / 2, pdfHeight - 10, { align: 'center' });
+    
+    // Save PDF with descriptive filename
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+    const filename = `grid_${rows}x${cols}_${paperSize}_${isHorizontal ? 'landscape' : 'portrait'}_${timestamp}.pdf`;
     pdf.save(filename);
     
   } catch (error) {

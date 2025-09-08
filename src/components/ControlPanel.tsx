@@ -1,13 +1,9 @@
-import React from 'react';
-import type { ControlPanelProps, ColorIndex, Language } from '@/types/index.ts';
-import { getText } from '@/utils/language.ts';
+import React, { useState } from "react";
+import type { ControlPanelProps, Language } from "@/types/index.ts";
+import { getText } from "@/utils/language.ts";
+import { generateRandomColor, isColorInPalette } from "@/utils/grid.ts";
 
-interface ExtendedControlPanelProps extends ControlPanelProps {
-  language: Language;
-}
-
-
-const ControlPanel: React.FC<ExtendedControlPanelProps> = ({
+const ControlPanel: React.FC<ControlPanelProps> = ({
   rows,
   cols,
   selectedColor,
@@ -19,14 +15,16 @@ const ControlPanel: React.FC<ExtendedControlPanelProps> = ({
   onToggleOrientation,
   onClearGrid,
   onExportPDF,
-  onUpdateGrid
+  onUpdateGrid,
+  onAddColor,
+  onRemoveColor,
+  colors,
+  setColors,
 }) => {
-  const colorOptions: { value: ColorIndex; bgClass: string }[] = [
-    { value: 1, bgClass: 'bg-indigo-500' },
-    { value: 2, bgClass: 'bg-pink-400' },
-    { value: 3, bgClass: 'bg-teal-400' },
-    { value: 4, bgClass: 'bg-yellow-300' }
-  ];
+  // Collapse state for sections
+  const [showGridControls, setShowGridControls] = useState(true);
+  const [showColors, setShowColors] = useState(true);
+  const [showActions, setShowActions] = useState(true);
 
   const handleRowsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -42,92 +40,165 @@ const ControlPanel: React.FC<ExtendedControlPanelProps> = ({
     }
   };
 
-  return (
-    <div className="flex flex-col gap-3 mb-6 max-w-2xl">
-      {/* First Row: Grid Controls and Color Picker */}
-      <div className="flex flex-wrap gap-3 justify-center">
-        {/* Grid Dimensions */}
-        <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-md min-w-[200px]">
-          <label className="font-semibold text-gray-700 text-sm whitespace-nowrap">
-            {getText('rows', language)}
-          </label>
-          <input
-            type="number"
-            value={rows}
-            onChange={handleRowsChange}
-            min="1"
-            max="50"
-            className="w-14 px-2 py-1 text-center text-sm border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
-          />
-          
-          <label className="font-semibold text-gray-700 text-sm whitespace-nowrap ml-2">
-            {getText('columns', language)}
-          </label>
-          <input
-            type="number"
-            value={cols}
-            onChange={handleColsChange}
-            min="1"
-            max="50"
-            className="w-14 px-2 py-1 text-center text-sm border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
-          />
-          
-          <button
-            onClick={onUpdateGrid}
-            className="ml-2 px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-          >
-            {getText('update', language)}
-          </button>
-        </div>
+  const handleColorChange = (index: number, newColor: string) => {
+    const updatedColors = [...colors];
+    updatedColors[index] = newColor;
+    setColors(updatedColors);
+    onColorSelect(newColor);
+  };
 
-        {/* Color Picker */}
-        <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-md">
-          <label className="font-semibold text-gray-700 text-sm whitespace-nowrap">
-            {getText('color', language)}
-          </label>
-          {colorOptions.map(({ value, bgClass }) => (
+  const handleAddColor = () => {
+    if (colors.length < 20) {
+      let newColor = generateRandomColor();
+      while (isColorInPalette(newColor, colors)) {
+        newColor = generateRandomColor();
+      }
+      onAddColor();
+      setColors([...colors, newColor]);
+    }
+  };
+
+  const handleRemoveColor = (index: number) => {
+    if (colors.length > 1) {
+      const updatedColors = colors.filter((_, i) => i !== index);
+      setColors(updatedColors);
+      onRemoveColor(index);
+      if (selectedColor === colors[index] && updatedColors.length > 0) {
+        onColorSelect(updatedColors[0]);
+      }
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4 w-72 bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-4 overflow-y-auto">
+      {/* Grid Controls Section */}
+      <div>
+        <button
+          onClick={() => setShowGridControls(!showGridControls)}
+          className="w-full flex justify-between items-center px-3 py-2 font-semibold bg-indigo-500 text-white rounded-lg"
+        >
+          {getText("rows", language)} / {getText("columns", language)}
+          <span>{showGridControls ? "−" : "+"}</span>
+        </button>
+        {showGridControls && (
+          <div className="mt-3 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">{getText("rows", language)}</label>
+              <input
+                type="number"
+                value={rows}
+                onChange={handleRowsChange}
+                min="1"
+                max="50"
+                className="w-16 px-2 py-1 border rounded-md"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium">{getText("columns", language)}</label>
+              <input
+                type="number"
+                value={cols}
+                onChange={handleColsChange}
+                min="1"
+                max="50"
+                className="w-16 px-2 py-1 border rounded-md"
+              />
+            </div>
             <button
-              key={value}
-              onClick={() => onColorSelect(value)}
-              className={`
-                w-10 h-10 rounded-full transition-all duration-300 shadow-md
-                ${bgClass}
-                ${selectedColor === value 
-                  ? 'scale-110 ring-4 ring-gray-800 shadow-lg' 
-                  : 'hover:scale-105 hover:shadow-lg'
-                }
-              `}
+              onClick={onUpdateGrid}
+              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg shadow hover:shadow-lg"
             >
-              {selectedColor === value && (
-                <span className="text-white font-bold text-lg drop-shadow-md">✓</span>
-              )}
+              {getText("update", language)}
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* Second Row: Action Buttons */}
-      <div className="flex flex-wrap gap-3 justify-center">
+      {/* Colors Section */}
+      <div>
         <button
-          onClick={onToggleOrientation}
-          className="px-6 py-3 font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+          onClick={() => setShowColors(!showColors)}
+          className="w-full flex justify-between items-center px-3 py-2 font-semibold bg-indigo-500 text-white rounded-lg"
         >
-          {getText('changeOrientation', language)}
+          {getText("colors", language)}
+          <span>{showColors ? "−" : "+"}</span>
         </button>
-        
+        {showColors && (
+          <div className="mt-3 flex flex-wrap gap-3">
+            {colors.map((color, idx) => (
+              <div key={idx} className="relative group flex flex-col items-center">
+                <button
+                  onClick={() => onColorSelect(color)}
+                  className={`w-10 h-10 rounded-lg shadow-md transition-all duration-200 ${
+                    selectedColor === color
+                      ? "ring-2 ring-indigo-500 ring-offset-1"
+                      : ""
+                  }`}
+                  style={{ backgroundColor: color }}
+                >
+                  {selectedColor === color && (
+                    <span className="text-white font-bold text-xs drop-shadow-lg">✓</span>
+                  )}
+                </button>
+                {colors.length > 1 && (
+                  <button
+                    onClick={() => handleRemoveColor(idx)}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    ×
+                  </button>
+                )}
+                <input
+                  type="color"
+                  value={color}
+                  onChange={(e) => handleColorChange(idx, e.target.value)}
+                  className="mt-2 w-6 h-4 rounded cursor-pointer"
+                />
+              </div>
+            ))}
+            {colors.length < 12 && (
+              <button
+                onClick={handleAddColor}
+                className="w-10 h-10 bg-gray-200 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-300"
+              >
+                +
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Actions Section */}
+      <div>
         <button
-          onClick={onExportPDF}
-          className="px-6 py-3 font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+          onClick={() => setShowActions(!showActions)}
+          className="w-full flex justify-between items-center px-3 py-2 font-semibold bg-indigo-500 text-white rounded-lg"
         >
-          {getText('exportPDF', language)}
+          {getText("actions", language)}
+          <span>{showActions ? "−" : "+"}</span>
         </button>
-        
-        <button
-          onClick={onClearGrid}
-          className="px-6 py-3 font-semibold bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
-        >
-          {getText('clearGrid', language)}
-        </button>
+        {showActions && (
+          <div className="mt-3 flex flex-col gap-3">
+            <button
+              onClick={onToggleOrientation}
+              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg shadow hover:shadow-lg"
+            >
+              {getText("changeOrientation", language)}
+            </button>
+            <button
+              onClick={onExportPDF}
+              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg shadow hover:shadow-lg"
+            >
+              {getText("exportPDF", language)}
+            </button>
+            <button
+              onClick={onClearGrid}
+              className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow hover:shadow-lg"
+            >
+              {getText("clearGrid", language)}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
