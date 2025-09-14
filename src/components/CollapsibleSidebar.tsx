@@ -1,12 +1,8 @@
+// src/components/CollapsibleSidebar.tsx - Refactored
 import React, { useState } from 'react';
-import type { ControlPanelProps } from '@/types/index.ts';
 import ControlPanel from './ControlPanel.tsx';
 
-interface CollapsibleSidebarProps extends ControlPanelProps {
-  // No additional props needed, we're just wrapping ControlPanel
-}
-
-const CollapsibleSidebar: React.FC<CollapsibleSidebarProps> = (props) => {
+const CollapsibleSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const toggleSidebar = () => {
@@ -16,7 +12,7 @@ const CollapsibleSidebar: React.FC<CollapsibleSidebarProps> = (props) => {
   return (
     <>
       {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full bg-white/95 backdrop-blur-xl shadow-2xl border-r border-white/30 transition-transform duration-300 ease-in-out z-40 ${
+      <div className={`fixed left-0 top-0 h-full bg-white/95 backdrop-blur-xl shadow-2xl border-r border-white/30 transition-transform duration-300 ease-in-out z-20 ${
         isCollapsed ? '-translate-x-full' : 'translate-x-0'
       }`}>
         <div className="w-80 h-full overflow-y-auto">
@@ -27,9 +23,9 @@ const CollapsibleSidebar: React.FC<CollapsibleSidebarProps> = (props) => {
             </h2>
           </div>
           
-          {/* Control Panel Content */}
+          {/* Control Panel Content - now gets data from context */}
           <div className="p-6">
-            <ControlPanel {...props} />
+            <ControlPanel />
           </div>
         </div>
       </div>

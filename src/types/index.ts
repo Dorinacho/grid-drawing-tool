@@ -4,9 +4,15 @@ export type PaperSize = 'A3' | 'A4' | 'A5';
 
 export type Orientation = 'horizontal' | 'vertical';
 
-// Changed: Now the matrix stores color hex values directly, or null for empty cells
+// Updated: Cell can now contain color, symbol, or both
+export interface CellData {
+  color: string | null;
+  symbol: string | null;
+}
+
+// Updated: Matrix stores CellData objects instead of just colors
 export interface GridMatrix {
-  [row: number]: (string | null)[];
+  [row: number]: (CellData | null)[];
 }
 
 export interface PaperDimensions {
@@ -18,7 +24,8 @@ export interface GridConfig {
   rows: number;
   cols: number;
   isHorizontal: boolean;
-  selectedColor: string; // Changed: Now uses hex color string
+  selectedColor: string;
+  selectedSymbol: string | null; // Added: Selected symbol
 }
 
 export interface Translations {
@@ -40,28 +47,36 @@ export interface GridCanvasProps {
   rows: number;
   cols: number;
   isHorizontal: boolean;
-  selectedColor: string; // Changed: Now uses hex color string
+  // selectedColor: string;
+  // selectedSymbol: string | null; // Added: Selected symbol
   onCellClick: (row: number, col: number) => void;
-  colors: string[]; // Added: Array of available colors
+  // colors: string[];
+  // symbols: string[]; // Added: Available symbols
 }
 
 export interface ControlPanelProps {
   rows: number;
   cols: number;
-  selectedColor: string; // Changed: Now uses hex color string
+  selectedColor: string;
+  selectedSymbol: string | null; // Added: Selected symbol
   isHorizontal: boolean;
   onRowsChange: (rows: number) => void;
   onColsChange: (cols: number) => void;
-  onColorSelect: (color: string) => void; // Changed: Now uses hex color string
+  onColorSelect: (color: string) => void;
+  onSymbolSelect: (symbol: string | null) => void; // Added: Symbol selection
   onToggleOrientation: () => void;
   onClearGrid: () => void;
   onExportPDF: () => void;
   onUpdateGrid: () => void;
-  onAddColor: () => void; // Added: Function to add new colors
-  onRemoveColor: (index: number) => void; // Added: Function to remove colors
+  onAddColor: () => void;
+  onRemoveColor: (index: number) => void;
+  onAddSymbol: () => void; // Added: Add symbol function
+  onRemoveSymbol: (index: number) => void; // Added: Remove symbol function
   language: Language;
-  colors: string[]; // Changed: Array of hex color strings
+  colors: string[];
+  symbols: string[]; // Added: Available symbols
   setColors: (colors: string[]) => void;
+  setSymbols: (symbols: string[]) => void; // Added: Set symbols function
 }
 
 export interface LanguageSelectorProps {
