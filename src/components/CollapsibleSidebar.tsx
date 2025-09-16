@@ -1,6 +1,5 @@
-// src/components/CollapsibleSidebar.tsx - Refactored
-import React, { useState } from 'react';
-import ControlPanel from './ControlPanel.tsx';
+import React, { useState } from "react";
+import ControlPanel from "./ControlPanel.tsx";
 
 const CollapsibleSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -11,36 +10,30 @@ const CollapsibleSidebar: React.FC = () => {
 
   return (
     <>
-      {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full bg-white/95 backdrop-blur-xl shadow-2xl border-r border-white/30 transition-transform duration-300 ease-in-out z-20 ${
-        isCollapsed ? '-translate-x-full' : 'translate-x-0'
-      }`}>
-        <div className="w-80 h-full overflow-y-auto">
-          {/* Header */}
-          <div className="p-6 border-b border-gray-200/50">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Controls
-            </h2>
-          </div>
-          
-          {/* Control Panel Content - now gets data from context */}
-          <div className="p-6">
-            <ControlPanel />
-          </div>
-        </div>
+      <div
+        className={`fixed w-[20rem] left-0 top-0 h-full overflow-y-auto bg-white/95 backdrop-blur-xl shadow-2xl border-r border-white/30 transition-transform duration-300 ease-in-out z-20 ${
+          isCollapsed ? "-translate-x-full" : "translate-x-0"
+        }`}
+      >
+        {/* <div className="p-6 border-b border-gray-200/50">
+          <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Controls
+          </h2>
+        </div> */}
+        <ControlPanel />
       </div>
 
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
         className={`fixed top-6 z-50 bg-white/95 backdrop-blur-xl shadow-lg border border-white/30 rounded-full p-3 transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 ${
-          isCollapsed ? 'left-6' : 'left-[21rem]'
+          isCollapsed ? "left-6" : "left-[21rem]"
         }`}
-        title={isCollapsed ? 'Open controls' : 'Close controls'}
+        title={isCollapsed ? "Open controls" : "Close controls"}
       >
         <svg
           className={`w-5 h-5 text-gray-600 transition-transform duration-300 ${
-            isCollapsed ? 'rotate-0' : 'rotate-180'
+            isCollapsed ? "rotate-0" : "rotate-180"
           }`}
           fill="none"
           stroke="currentColor"

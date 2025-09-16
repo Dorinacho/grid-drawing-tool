@@ -1,4 +1,3 @@
-// src/components/ControlPanel.tsx - Refactored
 import React, { useState } from "react";
 import { useGridActions } from "../hooks/useGridActions.ts";
 import { renderSymbolSVG } from "../utils/symbols.tsx";
@@ -48,8 +47,7 @@ const ControlPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-72 bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-4 overflow-y-auto">
-      {/* Grid Controls Section */}
+    <div className="flex flex-col gap-4 w-72 bg-white/90 backdrop-blur-lg p-4 overflow-y-auto m-auto mt-[3rem]">
       <div>
         <button
           onClick={() => setShowGridControls(!showGridControls)}
