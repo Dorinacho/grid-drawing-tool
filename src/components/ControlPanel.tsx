@@ -67,7 +67,7 @@ const ControlPanel: React.FC = () => {
                 value={state.rows}
                 onChange={handleRowsInputChange}
                 min="1"
-                max="50"
+                max="100"
                 className="w-16 px-2 py-1 border rounded-md"
               />
             </div>
@@ -80,7 +80,7 @@ const ControlPanel: React.FC = () => {
                 value={state.cols}
                 onChange={handleColsInputChange}
                 min="1"
-                max="50"
+                max="100"
                 className="w-16 px-2 py-1 border rounded-md"
               />
             </div>

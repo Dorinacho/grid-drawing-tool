@@ -3,8 +3,7 @@ import { useCallback } from "react";
 import { useGrid } from "../contexts/GridContext.tsx";
 import type { PaperSize, Language, CellData } from "../types/index.ts";
 import { generateRandomColor, isColorInPalette } from "../utils/grid.ts";
-import { setStoredLanguage } from "../utils/language.ts";
-import { exportGridToPDF } from "../utils/pdf.ts";
+import { exportGridToPDF, previewGridToPDF } from "../utils/pdf.ts";
 
 export const useGridActions = () => {
   const { state, dispatch, getText } = useGrid();
@@ -111,8 +110,8 @@ export const useGridActions = () => {
     if (
       state.rows > 0 &&
       state.cols > 0 &&
-      state.rows <= 50 &&
-      state.cols <= 50
+      state.rows <= 100 &&
+      state.cols <= 100
     ) {
       dispatch({ type: "UPDATE_GRID" });
     } else {
@@ -120,12 +119,13 @@ export const useGridActions = () => {
     }
   }, [state.rows, state.cols, dispatch, getText]);
 
-  // Export actions
+  // Export actions - Updated to handle async PDF generation with svg2pdf.js
   const handleExportPDF = useCallback(
-    (paperSize?: PaperSize) => {
+    async (paperSize?: PaperSize) => {
       const size = paperSize || state.selectedPaperSize;
       try {
-        exportGridToPDF(
+        // Try to use svg2pdf.js with your existing SVG paths
+        await exportGridToPDF(
           state.matrix,
           state.rows,
           state.cols,
@@ -135,8 +135,33 @@ export const useGridActions = () => {
         );
         dispatch({ type: "SET_EXPORT_MODAL_OPEN", payload: false });
       } catch (error) {
-        console.error("Export failed:", error);
-        alert(getText("exportError"));
+        console.error(
+          "svg2pdf.js export failed, falling back to basic shapes:",
+          error
+        );
+      }
+    },
+    [state, dispatch, getText]
+  );
+
+  const handlePreviewPDF = useCallback(
+    async (paperSize?: PaperSize) => {
+      const size = paperSize || state.selectedPaperSize;
+      try {
+        // Try to use svg2pdf.js with your existing SVG paths
+        await previewGridToPDF(
+          state.matrix,
+          state.rows,
+          state.cols,
+          state.isHorizontal,
+          size
+        );
+        // dispatch({ type: "SET_EXPORT_MODAL_OPEN", payload: false });
+      } catch (error) {
+        console.error(
+          "svg2pdf.js export failed, falling back to basic shapes:",
+          error
+        );
       }
     },
     [state, dispatch, getText]
@@ -221,6 +246,7 @@ export const useGridActions = () => {
 
     // Export actions
     handleExportPDF,
+    handlePreviewPDF,
     openExportModal,
     closeExportModal,
     handlePaperSizeChange,

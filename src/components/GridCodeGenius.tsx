@@ -16,6 +16,7 @@ const GridCodeGeniusContent: React.FC = () => {
     handleCellClick, 
     closeExportModal, 
     handleExportPDF, 
+    handlePreviewPDF,
     handlePaperSizeChange 
   } = useGridActions();
 
@@ -89,6 +90,7 @@ const GridCodeGeniusContent: React.FC = () => {
             visible={state.isExportModalOpen}
             onClose={closeExportModal}
             onExport={handleExportPDF}
+            onPreview={handlePreviewPDF}
             selectedPaperSize={state.selectedPaperSize}
             onSelectPaperSize={handlePaperSizeChange}
             language={state.language}

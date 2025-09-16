@@ -9,6 +9,7 @@ interface ExtendedExportModalProps extends ExportModalProps {
   onSelectPaperSize: (size: PaperSize) => void;
   onClose: () => void;
   onExport: (paperSize: PaperSize) => void;
+  onPreview: (paperSize: PaperSize) => void;
 }
 
 const paperSizes: { key: PaperSize; label: string; dimensions: string }[] = [
@@ -23,6 +24,7 @@ export const ExportModal: React.FC<ExtendedExportModalProps> = ({
   onSelectPaperSize,
   onClose,
   onExport,
+  onPreview,
   visible,
 }) => {
   if (!visible) return null;
@@ -103,6 +105,12 @@ export const ExportModal: React.FC<ExtendedExportModalProps> = ({
               className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
             >
               {getText("exportPDF", language) || getText("ok", language)}
+            </button>
+             <button
+              onClick={() => onPreview(selectedPaperSize)}
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
+            >
+              {getText("preview", language) || getText("ok", language)}
             </button>
           </div>
         </div>

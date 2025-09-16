@@ -13,7 +13,8 @@ export const translations: Translations = {
     clearGrid: "Clear Grid",
     instructions:
       "Click on grid cells to paint/unpaint them with selected color and symbol.",
-    symbolInstructions: "Click on grid cells to add colored symbols on white background.",
+    symbolInstructions:
+      "Click on grid cells to add colored symbols on white background.",
     currentOrientation: "Current orientation:",
     horizontal: "Horizontal",
     vertical: "Vertical",
@@ -35,6 +36,7 @@ export const translations: Translations = {
     shapes: "Shapes",
     arrows: "Arrows",
     misc: "Misc",
+    preview: "Preview PDF",
   },
   ro: {
     title: "GridCodeGenius",
@@ -48,7 +50,8 @@ export const translations: Translations = {
     clearGrid: "Șterge Grila",
     instructions:
       "Faceți clic pe celulele grilei pentru a le colora/decolora cu culoarea și simbolul selectate.",
-    symbolInstructions: "Faceți clic pe celulele grilei pentru a adăuga simboluri colorate pe fundal alb.",
+    symbolInstructions:
+      "Faceți clic pe celulele grilei pentru a adăuga simboluri colorate pe fundal alb.",
     currentOrientation: "Orientarea curentă:",
     horizontal: "Orizontală",
     vertical: "Verticală",
@@ -68,8 +71,9 @@ export const translations: Translations = {
     symbolColor: "Culoarea Simbolului",
     symbol: "Simbol",
     shapes: "Forme",
-    arrows: "Săgeți", 
+    arrows: "Săgeți",
     misc: "Diverse",
+    preview: "Previzualizare PDF",
   },
 };
 
