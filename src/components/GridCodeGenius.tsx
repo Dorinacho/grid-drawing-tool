@@ -4,20 +4,28 @@ import { GridProvider } from "../contexts/GridContext.tsx";
 import { useGridActions } from "../hooks/useGridActions.ts";
 import LanguageSelector from "./LanguageSelector.tsx";
 import GridCanvas from "./GridCanvas.tsx";
-import { ExportModal } from "./ExportModal.tsx";
+import { ExportModal } from "./modals/ExportModal.tsx";
 import CollapsibleSidebar from "./CollapsibleSidebar.tsx";
 import { renderSymbolSVG } from "../utils/symbols.tsx";
 
 const GridCodeGeniusContent: React.FC = () => {
-  const { 
-    state, 
-    getText, 
-    // handleLanguageChange, 
-    handleCellClick, 
-    closeExportModal, 
-    handleExportPDF, 
-    handlePreviewPDF,
-    handlePaperSizeChange 
+  const {
+    state,
+    getText,
+// TODO code cleanup: remove commented code
+// TODO export modal actions
+// TODO UI polish
+
+    // handleLanguageChange,
+    handleCellClick,
+    // closeExportModal,
+    // handleExportPDF,
+    // handlePreviewPDF,
+    // handlePaperSizeChange
+    exportToPDF,
+    previewPDF,
+    closeModal: closeExportModal,
+    setPaperSize: handlePaperSizeChange,
   } = useGridActions();
 
   return (
@@ -55,7 +63,13 @@ const GridCodeGeniusContent: React.FC = () => {
                 {getText("symbol")}:
               </span>
               <div className="w-6 h-6 flex items-center justify-center bg-white border border-gray-300 rounded">
-                {state.selectedSymbol ? renderSymbolSVG(state.selectedSymbol, state.selectedColor, 16) : "−"}
+                {state.selectedSymbol
+                  ? renderSymbolSVG(
+                      state.selectedSymbol,
+                      state.selectedColor,
+                      16
+                    )
+                  : "−"}
               </div>
             </div>
           </div>
@@ -89,8 +103,8 @@ const GridCodeGeniusContent: React.FC = () => {
           <ExportModal
             visible={state.isExportModalOpen}
             onClose={closeExportModal}
-            onExport={handleExportPDF}
-            onPreview={handlePreviewPDF}
+            onExport={exportToPDF}
+            onPreview={previewPDF}
             selectedPaperSize={state.selectedPaperSize}
             onSelectPaperSize={handlePaperSizeChange}
             language={state.language}

@@ -7,17 +7,17 @@ const ControlPanel: React.FC = () => {
   const {
     state,
     getText,
-    handleRowsChange,
-    handleColsChange,
-    handleColorSelect,
-    handleSymbolSelect,
-    handleToggleOrientation,
-    handleClearGrid,
-    openExportModal,
-    handleUpdateGrid,
-    handleAddColor,
-    handleRemoveColor,
-    handleUpdateColor,
+    updateGrid: handleUpdateGrid,
+    clearGrid: handleClearGrid,
+    toggleOrientation: handleToggleOrientation,
+    updateCols:handleColsChange,
+    updateRows:handleRowsChange,
+    updateColor: handleUpdateColor,
+    addColor: handleAddColor,
+    removeColor: handleRemoveColor,
+    selectColor: handleColorSelect,
+    selectSymbol: handleSymbolSelect,
+    openModal: openExportModal,
   } = useGridActions();
 
   // Collapse state for sections

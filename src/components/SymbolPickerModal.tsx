@@ -20,7 +20,6 @@ const SYMBOL_CATEGORIES = {
       },
       { name: "square", path: "M3 3h18v18H3z" },
       { name: "triangle", path: "M12 2l9 20H3z" },
-      { name: "diamond", path: "M12 2l5 7-5 13L7 9z" },
       {
         name: "star",
         path: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
@@ -49,11 +48,6 @@ const SYMBOL_CATEGORIES = {
       { name: "x", path: "M18 6L6 18M6 6l12 12" },
       { name: "plus", path: "M12 5v14M5 12h14" },
       { name: "minus", path: "M5 12h14" },
-      { name: "exclamation", path: "M12 9v4M12 17h.01" },
-      {
-        name: "question",
-        path: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01",
-      },
     ],
   },
   misc: {

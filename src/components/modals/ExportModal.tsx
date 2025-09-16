@@ -1,6 +1,6 @@
 import React from "react";
-import type { ExportModalProps, PaperSize, Language } from "../types/index.ts";
-import { getText } from "../utils/language.ts";
+import type { ExportModalProps, PaperSize, Language } from "../../types/index.ts";
+import { getText } from "../../utils/language.ts";
 
 interface ExtendedExportModalProps extends ExportModalProps {
   language: Language;
