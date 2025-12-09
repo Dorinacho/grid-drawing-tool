@@ -1,7 +1,7 @@
 import type { GridMatrix, PaperSize, Language, CellData } from '@/types/index.ts';
 import type { jsPDF } from 'jspdf';
 import { paperSizes } from './grid.ts';
-import { SYMBOL_DEFINITIONS } from './symbols.tsx';
+import { SYMBOL_DEFINITIONS, isFilledSymbol } from './symbols.tsx';
 import { logger } from './logger.ts';
 import { PDF_DEFAULTS, SYMBOL_DEFAULTS } from '../constants.ts';
 
@@ -56,12 +56,8 @@ const createSVGElement = (symbol: string, color: string, size: number): SVGSVGEl
     path.setAttribute('stroke-linecap', 'round');
     path.setAttribute('stroke-linejoin', 'round');
 
-    // Determine if this symbol should be filled
-    if (
-        SYMBOL_DEFAULTS.FILLED_SYMBOLS.includes(
-            symbol as (typeof SYMBOL_DEFAULTS.FILLED_SYMBOLS)[number]
-        )
-    ) {
+    // Determine if this symbol should be filled (using shared helper)
+    if (isFilledSymbol(symbol)) {
         path.setAttribute('fill', color);
     } else {
         path.setAttribute('fill', 'none');
