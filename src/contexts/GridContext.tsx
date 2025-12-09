@@ -19,16 +19,16 @@ interface GridState {
   cols: number;
   matrix: GridMatrix;
   isHorizontal: boolean;
-  
+
   // Selection state
   selectedColor: string;
   selectedSymbol: string | null;
-  
+
   // UI state
   language: Language;
   isExportModalOpen: boolean;
   selectedPaperSize: PaperSize;
-  
+
   // Data
   colors: string[];
   symbols: string[];
@@ -53,8 +53,8 @@ type GridAction =
   | { type: 'REMOVE_COLOR'; payload: number }
   | { type: 'UPDATE_COLOR'; payload: { index: number; color: string } };
 
-// Initial state
-const initialState: GridState = {
+// Initial state - exported for testing
+export const initialState: GridState = {
   rows: 22,
   cols: 33,
   matrix: createEmptyMatrix(22, 33),
@@ -68,30 +68,30 @@ const initialState: GridState = {
   symbols: [],
 };
 
-// Grid reducer
-const gridReducer = (state: GridState, action: GridAction): GridState => {
+// Grid reducer - exported for testing
+export const gridReducer = (state: GridState, action: GridAction): GridState => {
   switch (action.type) {
     case 'SET_LANGUAGE':
       return { ...state, language: action.payload };
-    
+
     case 'SET_ROWS':
       return { ...state, rows: action.payload };
-    
+
     case 'SET_COLS':
       return { ...state, cols: action.payload };
-    
+
     case 'SET_SELECTED_COLOR':
       return { ...state, selectedColor: action.payload };
-    
+
     case 'SET_SELECTED_SYMBOL':
       return { ...state, selectedSymbol: action.payload };
-    
+
     case 'SET_COLORS':
       return { ...state, colors: action.payload };
-    
+
     case 'SET_SYMBOLS':
       return { ...state, symbols: action.payload };
-    
+
     case 'UPDATE_CELL': {
       const { row, col, data } = action.payload;
       const newMatrix = { ...state.matrix };
@@ -101,7 +101,7 @@ const gridReducer = (state: GridState, action: GridAction): GridState => {
       newMatrix[row][col] = data;
       return { ...state, matrix: newMatrix };
     }
-    
+
     case 'TOGGLE_ORIENTATION': {
       const { newMatrix, newRows, newCols } = transposeMatrix(
         state.matrix,
@@ -116,43 +116,43 @@ const gridReducer = (state: GridState, action: GridAction): GridState => {
         isHorizontal: !state.isHorizontal,
       };
     }
-    
+
     case 'CLEAR_GRID':
       return {
         ...state,
         matrix: createEmptyMatrix(state.rows, state.cols),
       };
-    
+
     case 'UPDATE_GRID':
       return {
         ...state,
         matrix: createEmptyMatrix(state.rows, state.cols),
       };
-    
+
     case 'SET_EXPORT_MODAL_OPEN':
       return { ...state, isExportModalOpen: action.payload };
-    
+
     case 'SET_SELECTED_PAPER_SIZE':
       return { ...state, selectedPaperSize: action.payload };
-    
+
     case 'ADD_COLOR':
       return {
         ...state,
         colors: [...state.colors, action.payload],
       };
-    
+
     case 'REMOVE_COLOR': {
       const newColors = state.colors.filter((_, i) => i !== action.payload);
       const removedColor = state.colors[action.payload];
       return {
         ...state,
         colors: newColors,
-        selectedColor: state.selectedColor === removedColor && newColors.length > 0 
-          ? newColors[0] 
+        selectedColor: state.selectedColor === removedColor && newColors.length > 0
+          ? newColors[0]
           : state.selectedColor,
       };
     }
-    
+
     case 'UPDATE_COLOR': {
       const { index, color } = action.payload;
       const newColors = [...state.colors];
@@ -163,7 +163,7 @@ const gridReducer = (state: GridState, action: GridAction): GridState => {
         selectedColor: state.selectedColor === state.colors[index] ? color : state.selectedColor,
       };
     }
-    
+
     default:
       return state;
   }
