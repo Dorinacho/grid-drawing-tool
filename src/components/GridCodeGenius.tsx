@@ -1,9 +1,11 @@
 // src/components/GridCodeGenius.tsx - Refactored
 import React from 'react';
 import { GridProvider } from '../contexts/GridContext.tsx';
+import { ConfirmationModalProvider } from '../contexts/ConfirmationModalContext.tsx';
 import { useGridActions } from '../hooks/useGridActions.ts';
 import GridCanvas from './GridCanvas.tsx';
 import { ExportModal } from './modals/ExportModal.tsx';
+import { ConfirmationModal } from './modals/ConfirmationModal.tsx';
 import CollapsibleSidebar from './CollapsibleSidebar.tsx';
 import { renderSymbolSVG } from '../utils/symbols.tsx';
 
@@ -16,6 +18,11 @@ const GridCodeGeniusContent: React.FC = () => {
         previewPDF,
         closeModal: closeExportModal,
         setPaperSize: handlePaperSizeChange,
+        // Confirmation modal
+        confirmationVisible,
+        confirmationAction,
+        handleConfirm,
+        hideConfirmation,
     } = useGridActions();
 
     return (
@@ -30,12 +37,6 @@ const GridCodeGeniusContent: React.FC = () => {
                     <h1 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                         {getText('title')}
                     </h1>
-
-                    {/* Language Selector */}
-                    {/* <LanguageSelector
-            currentLanguage={state.language}
-            onLanguageChange={handleLanguageChange}
-          /> */}
 
                     {/* Current Selection Display */}
                     <div className="flex justify-center gap-4 mb-6">
@@ -66,10 +67,7 @@ const GridCodeGeniusContent: React.FC = () => {
                         rows={state.rows}
                         cols={state.cols}
                         isHorizontal={state.isHorizontal}
-                        // selectedColor={state.selectedColor}
-                        // selectedSymbol={state.selectedSymbol}
                         onCellClick={handleCellClick}
-                        // colors={state.colors}
                     />
 
                     {/* Instructions */}
@@ -95,6 +93,15 @@ const GridCodeGeniusContent: React.FC = () => {
                         isOpen={false}
                         onPaperSizeChange={handlePaperSizeChange}
                     />
+
+                    {/* Confirmation Modal */}
+                    <ConfirmationModal
+                        visible={confirmationVisible}
+                        action={confirmationAction}
+                        language={state.language}
+                        onConfirm={handleConfirm}
+                        onCancel={hideConfirmation}
+                    />
                 </div>
             </div>
         </div>
@@ -104,7 +111,9 @@ const GridCodeGeniusContent: React.FC = () => {
 const GridCodeGenius: React.FC = () => {
     return (
         <GridProvider>
-            <GridCodeGeniusContent />
+            <ConfirmationModalProvider>
+                <GridCodeGeniusContent />
+            </ConfirmationModalProvider>
         </GridProvider>
     );
 };
