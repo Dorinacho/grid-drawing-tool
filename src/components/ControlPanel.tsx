@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { useGridActions } from '../hooks/useGridActions.ts';
 import { renderSymbolSVG } from '../utils/symbols.tsx';
 import { SymbolPickerModal } from './SymbolPickerModal.tsx';
 
-const ControlPanel: React.FC = () => {
+const ControlPanel: React.FC = memo(() => {
     const {
         state,
         getText,
@@ -240,6 +240,8 @@ const ControlPanel: React.FC = () => {
             />
         </div>
     );
-};
+});
+
+ControlPanel.displayName = 'ControlPanel';
 
 export default ControlPanel;

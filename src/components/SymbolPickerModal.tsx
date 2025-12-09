@@ -11,6 +11,87 @@ interface SymbolPickerModalProps {
 
 // Predefined symbol categories with SVG paths
 const SYMBOL_CATEGORIES = {
+    custom: {
+        name: 'custom',
+        symbols: [
+            {
+                name: 'cross_stitch', // Cusătură în X / cruciuliță
+                path: 'M2 2 L22 22 M22 2 L2 22',
+            },
+            {
+                name: 'straight_stitch', // Tighel simplu / linie
+                path: 'M2 12 H22',
+            },
+            {
+                name: 'chain_stitch', // Cusătură lănțișor
+                path: 'M4 12c0-2 4-2 4 0s4 2 4 0 4-2 4 0 4 2 4 0',
+            },
+            {
+                name: 'double_chain', // Lănțișor dublu
+                path: 'M4 10c0-2 4-2 4 0s4 2 4 0 4-2 4 0 4 2 4 0 M4 14c0-2 4-2 4 0s4 2 4 0 4-2 4 0 4 2 4 0',
+            },
+            {
+                name: 'zigzag', // Cusătură în "dinți de lup"
+                path: 'M2 20 L8 4 L14 20 L20 4',
+            },
+            {
+                name: 'zigzag_dense', // zigzag tradițional compact (Muntenia)
+                path: 'M2 18 L6 6 L10 18 L14 6 L18 18 L22 6',
+            },
+            {
+                name: 'diamond', // Romb (simbol foarte tradițional)
+                path: 'M12 2 L22 12 L12 22 L2 12 Z',
+            },
+            {
+                name: 'double_diamond', // Romb în romb (Moldova, Bucovina)
+                path: 'M12 2 L22 12 L12 22 L2 12 Z M12 6 L18 12 L12 18 L6 12 Z',
+            },
+            {
+                name: 'hourglass', // clepsidră / simbol feminin
+                path: 'M4 2 L20 2 L12 12 L20 22 L4 22 L12 12 Z',
+            },
+            {
+                name: 'star_8', // stea în 8 colțuri
+                path: 'M12 2 L15 9 L22 12 L15 15 L12 22 L9 15 L2 12 L9 9 Z',
+            },
+            {
+                name: 'sun_rosette', // rozetă solară (motif solar)
+                path: 'M12 2 L14 7 L20 8 L15 12 L20 16 L14 17 L12 22 L10 17 L4 16 L9 12 L4 8 L10 7 Z',
+            },
+            {
+                name: 'bar_stitch', // "steluță" liniară / bare verticale folosite în motive repetitive
+                path: 'M12 4 V20',
+            },
+            {
+                name: 'grain_spike', // Spic (Banat, Oltenia)
+                path: 'M12 2 L12 22 M12 6 L16 10 M12 10 L8 14 M12 14 L16 18 M12 18 L8 22',
+            },
+            {
+                name: 'tree_of_life', // Pomul vieții (stil geometric simplificat)
+                path: 'M12 22 V6 M12 6 L6 12 M12 6 L18 12 M12 12 L8 16 M12 12 L16 16',
+            },
+            {
+                name: 'wave', // Val (simbol al apelor, al vieții)
+                path: 'M2 16 C6 8 10 24 14 16 C18 8 22 24 26 16',
+            },
+            {
+                name: 'dot', // Punct (umplere în cruciuliță sau marcaj)
+                path: 'M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0',
+            },
+            {
+                name: 'square_fill', // Pătrat plin (umpluturi geometrice)
+                path: 'M6 6 H18 V18 H6 Z',
+            },
+            {
+                name: 'little_triangle', // Triunghi mic (Muntenia, Oltenia)
+                path: 'M12 4 L20 20 H4 Z',
+            },
+            {
+                name: 'hook', // "cârligul ciobanului" (Ardeal)
+                path: 'M6 4 H14 A6 6 0 0 1 14 16',
+            },
+        ],
+    },
     shapes: {
         name: 'shapes',
         symbols: [

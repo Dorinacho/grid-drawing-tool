@@ -1,5 +1,80 @@
 // Symbol definitions with SVG paths
 export const SYMBOL_DEFINITIONS: Record<string, string> = {
+    // 1. Cruce simplă (X)
+    cross: 'M3 3L21 21M21 3L3 21',
+
+    // 2. Cruce dublă (două X suprapuse / cruce "înaltă")
+    crossDouble: 'M2 7L7 2M17 22L22 17M2 17L7 22M17 2L22 7M12 2v20',
+
+    // 3. Cruce mare (bloc 2x2)
+    crossBlock: 'M6 6h4v4H6zM14 6h4v4h-4zM6 14h4v4H6zM14 14h4v4h-4z',
+
+    // 4. Linia punctată (punct înaintea acului)
+    dottedLine: 'M2 12h3M7 12h3M12 12h3M17 12h3',
+
+    // 5. Backstitch / linie continuă
+    backstitch: 'M2 12h20',
+
+    // 6. Tijă (oblică repetată)
+    stemStitch: 'M3 20L9 14L15 20L21 14',
+
+    // 7. Lanț (seriat - ochiuri)
+    chain: 'M4 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M10 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M16 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0',
+
+    // 8. Feston (scallop / margine)
+    feston: 'M2 16c2-4 6-4 8 0c2-4 6-4 8 0',
+
+    // 9. Pătrat plin (umplere)
+    squareFilled: 'M6 6h12v12H6z',
+
+    // 10. Umplere "păiate" (serii oblice)
+    paiteFill: 'M4 20L8 16M6 22L10 18M8 24L12 20M10 2L14 6M12 0L16 4',
+
+    // 11. Zig-zag (dinți de lup mici)
+    zigzag: 'M2 12l4-6 4 6 4-6 4 6 4-6',
+
+    // 12. Undă (apă)
+    wave: 'M0 14c3-6 6-6 9 0s6 6 9 0s6-6 9 0',
+
+    // 13. Romb (contur)
+    romb: 'M12 2L20 12L12 22L4 12Z',
+
+    // 14. Romb umplut (mic)
+    rombFilled: 'M12 4L18 12L12 20L6 12Z',
+
+    // 15. Stea / floare cu 8 colțuri (simplificată)
+    star8: 'M12 2l2.8 6.2L21 11l-6 2  -2.8 6.2L12 18l-2.2 1.2L3 13l6-2L12 2z',
+
+    // 16. Rozetă / roata solară
+    rosette: 'M12 2a10 10 0 0 0 0 20a10 10 0 0 0 0-20ZM12 6v12M6 12h12M7.5 7.5l9 9M7.5 16.5l9-9',
+
+    // 17. Frunză simplă
+    leaf: 'M20 4c-6 6-10 6-14 10c4-6 8-8 14-10z',
+
+    // 18. Vrej (colțat) - linie în zig-zag cu frunze mici
+    vine: 'M3 20c4-8 8-8 12-12c0 0 1 2 3 2c-4 4-6 6-12 12',
+
+    // 19. Spic de grâu (stilizat)
+    spike: 'M12 2v20M12 6l4 2M12 10l-4 2M12 14l4 2M12 18l-4 2',
+
+    // 20. Soare / roată cu raze
+    sun: 'M12 4a8 8 0 1 0 0 16a8 8 0 0 0 0-16M12 0v4M12 20v4M4 12H0M24 12h-4M4.5 4.5L2 2M21.5 21.5L24 24M4.5 19.5L2 22M21.5 2.5L24 0',
+
+    // 21. Dinți de lup mari (triunghiuri suprapuse)
+    teethLarge: 'M2 20l4-8 4 8 4-8 4 8 4-8',
+
+    // 22. Pătrat conturat (grid marker)
+    squareOutline: 'M4 4h16v16H4z',
+
+    // 23. Linie de centru (marcaj)
+    centerLine: 'M12 0v24',
+
+    // 24. Linie de margine (linie groasă)
+    marginLine: 'M2 2v20h2M20 2v20h2',
+
+    // 25. Colț pătrat (contur "┌┐└┘")
+    cornerBox: 'M4 4h8M4 4v8M20 20h-8M20 20v-8',
+
     // Shapes
     circle: 'M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0z',
     square: 'M0 0h24v24H0z',
@@ -22,7 +97,7 @@ export const SYMBOL_DEFINITIONS: Record<string, string> = {
     minus: 'M5 12h14',
 
     // Misc
-    sun: 'M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z',
+    // sun: 'M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z',
     moon: 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z',
     lightning: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
     target: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6zM12 10c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z',

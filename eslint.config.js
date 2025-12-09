@@ -49,6 +49,9 @@ export default tseslint.config(
             // (common UX pattern for modal overlays)
             'jsx-a11y/click-events-have-key-events': 'warn',
             'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+
+            // Disable prop-types since we use TypeScript for type checking
+            'react/prop-types': 'off',
         },
     },
     {

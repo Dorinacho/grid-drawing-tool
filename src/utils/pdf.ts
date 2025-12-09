@@ -1,10 +1,23 @@
 import type { GridMatrix, PaperSize, Language, CellData } from '@/types/index.ts';
+import type { jsPDF } from 'jspdf';
 import { paperSizes } from './grid.ts';
 import { SYMBOL_DEFINITIONS } from './symbols.tsx';
-import { jsPDF } from 'jspdf';
-import 'svg2pdf.js';
 import { logger } from './logger.ts';
 import { PDF_DEFAULTS, SYMBOL_DEFAULTS } from '../constants.ts';
+
+// Lazy load jsPDF and svg2pdf.js only when needed
+let jsPDFInstance: typeof import('jspdf') | null = null;
+
+const loadJsPDF = async (): Promise<typeof import('jspdf')> => {
+    if (!jsPDFInstance) {
+        logger.debug('PDF', 'Lazy loading jsPDF...');
+        jsPDFInstance = await import('jspdf');
+        // Also load svg2pdf.js which extends jsPDF
+        await import('svg2pdf.js');
+        logger.debug('PDF', 'jsPDF loaded successfully');
+    }
+    return jsPDFInstance;
+};
 
 // Helper function to convert hex color to RGB
 const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
@@ -144,6 +157,9 @@ const createGridPDF = async ({
     isHorizontal,
     paperSize,
 }: PDFGridOptions): Promise<jsPDF> => {
+    // Lazy load jsPDF
+    const { jsPDF } = await loadJsPDF();
+
     const paper = paperSizes[paperSize];
 
     // Determine orientation based on grid state
