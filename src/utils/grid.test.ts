@@ -17,7 +17,7 @@ import {
     paperSizes,
     A4_ASPECT_RATIO,
 } from './grid.ts';
-import type { GridMatrix, CellData } from '../types/index.ts';
+import type { CellData } from '../types/index.ts';
 
 // ============================================================================
 // User Journey: Creating and Initializing a Grid
@@ -253,10 +253,26 @@ describe('Color Palette Management', () => {
 
         it('returns a color from the predefined set', () => {
             const validColors = [
-                '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-                '#DDA0DD', '#98D8C8', '#F7DC6F', '#FF8A80', '#82B1FF',
-                '#B39DDB', '#A5D6A7', '#FFCC02', '#FF6E40', '#26C6DA',
-                '#AB47BC', '#66BB6A', '#FFA726', '#EC407A', '#42A5F5',
+                '#FF6B6B',
+                '#4ECDC4',
+                '#45B7D1',
+                '#96CEB4',
+                '#FFEAA7',
+                '#DDA0DD',
+                '#98D8C8',
+                '#F7DC6F',
+                '#FF8A80',
+                '#82B1FF',
+                '#B39DDB',
+                '#A5D6A7',
+                '#FFCC02',
+                '#FF6E40',
+                '#26C6DA',
+                '#AB47BC',
+                '#66BB6A',
+                '#FFA726',
+                '#EC407A',
+                '#42A5F5',
             ];
             const color = generateRandomColor();
             expect(validColors).toContain(color);
@@ -269,7 +285,7 @@ describe('Color Palette Management', () => {
         });
 
         it('all colors are valid hex strings', () => {
-            DEFAULT_COLORS.forEach(color => {
+            DEFAULT_COLORS.forEach((color) => {
                 expect(color).toMatch(/^#[0-9A-Fa-f]{6}$/);
             });
         });
@@ -298,13 +314,15 @@ describe('Grid Constants', () => {
         });
 
         it('A3 is larger than A4', () => {
-            expect(paperSizes.A3.width * paperSizes.A3.height)
-                .toBeGreaterThan(paperSizes.A4.width * paperSizes.A4.height);
+            expect(paperSizes.A3.width * paperSizes.A3.height).toBeGreaterThan(
+                paperSizes.A4.width * paperSizes.A4.height
+            );
         });
 
         it('A4 is larger than A5', () => {
-            expect(paperSizes.A4.width * paperSizes.A4.height)
-                .toBeGreaterThan(paperSizes.A5.width * paperSizes.A5.height);
+            expect(paperSizes.A4.width * paperSizes.A4.height).toBeGreaterThan(
+                paperSizes.A5.width * paperSizes.A5.height
+            );
         });
     });
 });

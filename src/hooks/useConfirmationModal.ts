@@ -1,44 +1,47 @@
-import { useCallback, useState } from "react";
-import type { ConfirmationAction } from "../components/modals/ConfirmationModal.tsx";
+import { useCallback, useState } from 'react';
+import type { ConfirmationAction } from '../components/modals/ConfirmationModal.tsx';
 
 export const useConfirmationModal = () => {
-  const [state, setState] = useState<{
-    visible: boolean;
-    action: ConfirmationAction | null;
-    pendingAction: (() => void) | null;
-  }>({
-    visible: false,
-    action: null,
-    pendingAction: null
-  });
-
-  const showConfirmation = useCallback((action: ConfirmationAction, pendingAction: () => void) => {
-    setState({
-      visible: true,
-      action,
-      pendingAction
+    const [state, setState] = useState<{
+        visible: boolean;
+        action: ConfirmationAction | null;
+        pendingAction: (() => void) | null;
+    }>({
+        visible: false,
+        action: null,
+        pendingAction: null,
     });
-  }, []);
 
-  const hideConfirmation = useCallback(() => {
-    setState({
-      visible: false,
-      action: null,
-      pendingAction: null
-    });
-  }, []);
+    const showConfirmation = useCallback(
+        (action: ConfirmationAction, pendingAction: () => void) => {
+            setState({
+                visible: true,
+                action,
+                pendingAction,
+            });
+        },
+        []
+    );
 
-  const handleConfirm = useCallback(() => {
-    if (state.pendingAction) {
-      state.pendingAction();
-    }
-    hideConfirmation();
-  }, [state.pendingAction, hideConfirmation]);
+    const hideConfirmation = useCallback(() => {
+        setState({
+            visible: false,
+            action: null,
+            pendingAction: null,
+        });
+    }, []);
 
-  return {
-    confirmationState: state,
-    showConfirmation,
-    hideConfirmation,
-    handleConfirm
-  };
+    const handleConfirm = useCallback(() => {
+        if (state.pendingAction) {
+            state.pendingAction();
+        }
+        hideConfirmation();
+    }, [state, hideConfirmation]);
+
+    return {
+        confirmationState: state,
+        showConfirmation,
+        hideConfirmation,
+        handleConfirm,
+    };
 };

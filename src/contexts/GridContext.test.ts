@@ -6,7 +6,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { gridReducer, initialState } from './GridContext.tsx';
-import { createEmptyMatrix, DEFAULT_COLORS } from '../utils/grid.ts';
+import { DEFAULT_COLORS } from '../utils/grid.ts';
 
 // ============================================================================
 // Initial State Verification

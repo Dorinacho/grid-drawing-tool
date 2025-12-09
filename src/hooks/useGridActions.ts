@@ -1,59 +1,58 @@
-import { useGrid } from "../contexts/GridContext.tsx";
-import { useConfirmationModal } from "./useConfirmationModal.ts";
-import { useGridOperations } from "./useGridOperations.ts";
-import { useGridSelection } from "./useGridSelection.ts";
-import { useColorManagement } from "./useColorManagement.ts";
-import { useExportModal } from "./useExportModal.ts";
-import { usePdfExport } from "./usePdfExport.ts";
-import type { PaperSize } from "@/types/index.ts";
-import { usePdfPreview } from "./usePdfPreview.ts";
+import { useGrid } from '../contexts/GridContext.tsx';
+import { useConfirmationModal } from './useConfirmationModal.ts';
+import { useGridOperations } from './useGridOperations.ts';
+import { useGridSelection } from './useGridSelection.ts';
+import { useColorManagement } from './useColorManagement.ts';
+import { useExportModal } from './useExportModal.ts';
+import { usePdfExport } from './usePdfExport.ts';
+import { usePdfPreview } from './usePdfPreview.ts';
 
 export const useGridActions = () => {
-  const { state, getText } = useGrid();
-  const confirmationModal = useConfirmationModal();
-  const gridOperations = useGridOperations();
-  const gridSelection = useGridSelection();
-  const colorManagement = useColorManagement();
-  const exportModal = useExportModal();
-  const pdfExport = usePdfExport();
-  const pdfPreview = usePdfPreview();
+    const { state, getText } = useGrid();
+    const confirmationModal = useConfirmationModal();
+    const gridOperations = useGridOperations();
+    const gridSelection = useGridSelection();
+    const colorManagement = useColorManagement();
+    const exportModal = useExportModal();
+    const pdfExport = usePdfExport();
+    const pdfPreview = usePdfPreview();
 
-  // Combined export handler
-  // const handleExportPDF = async (paperSize?: PaperSize) => {
-  //   const result = await pdfExport.exportToPDF(paperSize);
-  //   if (result?.success) {
-  //     exportModal.closeModal();
-  //   }
-  //   // if (result?.error)
-  //   else {
-  //     console.error("PDF export failed:", result);
-  //     // alert(result.error);
-  //   }
-  // };
+    // Combined export handler
+    // const handleExportPDF = async (paperSize?: PaperSize) => {
+    //   const result = await pdfExport.exportToPDF(paperSize);
+    //   if (result?.success) {
+    //     exportModal.closeModal();
+    //   }
+    //   // if (result?.error)
+    //   else {
+    //     console.error("PDF export failed:", result);
+    //     // alert(result.error);
+    //   }
+    // };
 
-  return {
-    // State
-    state,
-    getText,
+    return {
+        // State
+        state,
+        getText,
 
-    // Confirmation modal
-    ...confirmationModal,
+        // Confirmation modal
+        ...confirmationModal,
 
-    // Grid operations
-    ...gridOperations,
+        // Grid operations
+        ...gridOperations,
 
-    // Grid selection
-    ...gridSelection,
+        // Grid selection
+        ...gridSelection,
 
-    // Color management
-    ...colorManagement,
+        // Color management
+        ...colorManagement,
 
-    // Export
-    ...exportModal,
-    ...pdfExport,
-    ...pdfPreview
-    // handleExportPDF,
-  };
+        // Export
+        ...exportModal,
+        ...pdfExport,
+        ...pdfPreview,
+        // handleExportPDF,
+    };
 };
 
 // // src/hooks/useGridActions.ts
